@@ -110,6 +110,27 @@ def save():
             #data_file.write(f"{website} | {email} | {password}\n")    
             #data_file.close()
 
+# ---------------------------- FIND PASSWORD ------------------------------- #
+
+def find_password():
+    website = website_entry.get()
+
+    try:
+        with open("data.json") as data_file :
+            #Reading old data
+            data = json.load(data_file)
+
+    except FileNotFoundError:
+        messagebox.showerror(title="Error" , message="No Data File Found")
+
+    else:
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+            messagebox.showinfo(title=website , message=f"Email:{email}\nPasswrod:{password}")
+        else:
+            messagebox.showerror(title="Error" , message=f"No Details for {website} exists.")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -136,8 +157,8 @@ password_label.grid(column=0 , row=3)
 
 #Entry
 #website_entry = Entry(width=35 )
-website_entry = Entry(width=50 )
-website_entry.grid(column=1 , row=1 , columnspan=2)
+website_entry = Entry(width=32 )
+website_entry.grid(column=1 , row=1)
 website_entry.focus()
 
 #user_entry = Entry(width=35 )
@@ -153,6 +174,10 @@ password_entry.grid(column=1 , row=3 )
 #Button
 generate_button = Button(text="Generate Password"  , command=generate_password)
 generate_button.grid(column=2 , row=3)
+
+#Button
+search_button = Button(text="Search" ,width=13 , command=find_password)
+search_button.grid(column=2 , row=1)
 
 #add_button = Button(text="Add"  , width=30 , command=save)
 add_button = Button(text="Add"  , width=43 , command=save)
